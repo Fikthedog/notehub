@@ -1,0 +1,41 @@
+import { isCurriculumLesson } from './curriculum.mjs';
+/** Shared authorization and input checks. No credentials or Firebase SDK imports. */
+export function allowedTeacher(
+  claims: { email?: string; email_verified?: boolean; firebase?: { sign_in_provider?: string } },
+  teacherEmails: string | undefined,
+): boolean {
+  const approved = (teacherEmails ?? '').split(',').map(email => email.trim().toLowerCase()).filter(Boolean);
+  return approved.length > 0 &&
+    claims.email_verified === true &&
+    claims.firebase?.sign_in_provider === 'google.com' &&
+    typeof claims.email === 'string' && approved.includes(claims.email.toLowerCase());
+}
+
+export const validId = (value: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value);
+
+/** Only untransformed JPEGs uploaded into this app's Cloudinary folder are accepted. */
+export function imagePath(value: unknown, cloudName: string): string | null {
+  if (typeof value !== 'string' || !/^[a-z0-9_-]+$/.test(cloudName)) return null;
+  const prefix = `https://res.cloudinary.com/${cloudName}/image/upload/`;
+  if (!value.startsWith(prefix)) return null;
+  const match = /^v[0-9]+\/(notehub\/([0-9a-f-]+))\.jpg$/.exec(value.slice(prefix.length));
+  return match && validId(match[2]) ? match[1] : null;
+}
+
+export function canAttachUpload(record: { url?: string; owner?: string; lessonId?: string } | undefined, uid: string, url: string): boolean {
+  return Boolean(record && record.owner === uid && record.url === url && !record.lessonId);
+}
+
+export function validLesson(value: unknown, cloudName: string): value is {
+  title: string; topic: string; date: string; description: string; images: string[]; curriculumLesson: string;
+} {
+  if (!value || typeof value !== 'object') return false;
+  const { title, topic, date, description, images, curriculumLesson } = value as Record<string, unknown>;
+  return typeof title === 'string' && title.trim().length > 0 && title.length <= 120 &&
+    topic === 'Calculus' && isCurriculumLesson(curriculumLesson) &&
+    typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date) &&
+    !Number.isNaN(Date.parse(date)) && new Date(date).toISOString().slice(0, 10) === date &&
+    typeof description === 'string' && description.length <= 1000 &&
+    Array.isArray(images) && images.length >= 1 && images.length <= 8 &&
+    new Set(images).size === images.length && images.every(url => imagePath(url, cloudName) !== null);
+}
