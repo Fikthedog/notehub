@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;650;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 
 :root {
   --paper: #fafbf7;
@@ -11,7 +11,7 @@
   --green: #304e3c;
   --shadow-sm: 0 1px 2px rgba(37,56,46,.04), 0 8px 24px rgba(37,56,46,.055);
   --shadow-md: 0 18px 45px rgba(37,56,46,.11);
-  --font: 'DM Sans', sans-serif;
+  --font: 'IBM Plex Sans', sans-serif;
   --radius: 12px;
 }
 html { color-scheme: light; }
@@ -406,4 +406,322 @@ html[data-theme='dark'] .mobile-lesson-filter { color: #a8b8a0; }
   .mobile-lesson-filter { display: block; flex-basis: 100%; font-size: 11px; color: #5e7151; }
   .mobile-lesson-filter select { display: block; width: 100%; min-height: 44px; padding: 10px; margin-top: 7px; border: 1px solid #cad5bd; border-radius: 7px; background: #fff; color: var(--ink); font-size: 14px; }
   .modal select { font-size: 16px; }
+}
+
+/* Editorial archive direction: quiet navigation, explicit hierarchy, flat surfaces. */
+.sidebar {
+  width: 256px;
+  padding: 28px 20px 18px;
+  background: #18372b;
+  border-right: 0;
+  box-shadow: none;
+  color: #f4f4e9;
+}
+.brand {
+  margin: 0 8px;
+  color: #fffef5;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -.035em;
+}
+.brand-icon {
+  width: 32px;
+  height: 34px;
+  margin-right: 9px;
+  border: 1px solid #dbe88c;
+  border-radius: 0;
+  background: transparent;
+  color: #dbe88c;
+  box-shadow: none;
+}
+.brand-dot { color: #dbe88c; }
+.class-label {
+  margin: 32px 8px 28px;
+  padding: 18px 0;
+  border-top: 1px solid #ffffff24;
+  border-bottom: 1px solid #ffffff24;
+  color: #fff;
+}
+.class-avatar { border-color: #ffffff3b; color: #dbe88c; }
+.class-label small,
+.nav-label { color: #a9bdb3; }
+.nav-label,
+.eyebrow,
+.results-line,
+.latest-label,
+.photo-count,
+.topic-tag,
+.archive-count small {
+  font-family: 'IBM Plex Mono',monospace;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+.nav-item,
+.teacher-link,
+.unit-group > summary,
+.curriculum-source { color: #b9cac2; }
+.nav-item { margin: 1px 0; border-radius: 0; }
+.nav-item:hover,
+.teacher-link:hover,
+.unit-group > summary:hover { background: #ffffff0c; color: #fff; }
+.nav-item.active {
+  background: transparent;
+  color: #fff;
+  box-shadow: inset 2px 0 #dbe88c;
+}
+.nav-item.active svg { color: #dbe88c; }
+.curriculum-nav { margin-top: 24px; }
+.unit-group { margin-bottom: 2px; }
+.unit-group > summary { border-radius: 0; }
+.unit-group > summary small { color: #8fa69b; }
+.lesson-options { gap: 1px; padding: 2px 8px 12px; }
+.lesson-option {
+  min-height: 36px;
+  border: 1px solid #ffffff10;
+  border-radius: 0;
+  background: #ffffff08;
+  color: #bfcec7;
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+}
+.lesson-option:hover { background: #ffffff15; color: #fff; }
+.lesson-option.selected { background: #dbe88c; color: #18372b; }
+.sidebar-bottom { border-top: 1px solid #ffffff20; }
+.main-shell {
+  width: calc(100% - 256px);
+  margin-left: 256px;
+  background: #f6f5ed;
+}
+.topbar {
+  height: 64px;
+  padding: 0 52px;
+  border-bottom: 1px solid #d7d7cd;
+  background: #f6f5ed;
+  backdrop-filter: none;
+}
+.breadcrumb { font-family: 'IBM Plex Mono',monospace; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+.breadcrumb > span { color: #a2a49a; }
+.theme-toggle,
+.notification-toggle { border-radius: 0; }
+.theme-toggle:hover,
+.notification-toggle:hover,
+.notification-toggle.active { background: #e9e8df; }
+main { max-width: 1340px; padding: 70px 52px 34px; }
+.page-heading {
+  align-items: flex-end;
+  margin-bottom: 72px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #242f29;
+}
+.page-heading::before { display: none; }
+.heading-copy { min-width: 0; }
+.eyebrow { display: block; margin-bottom: 18px; color: #617068; font-size: 10px; }
+h1 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: clamp(44px,6vw,78px);
+  font-weight: 400;
+  line-height: .98;
+  letter-spacing: -.065em;
+  margin-bottom: 20px;
+}
+.page-heading p { max-width: 44ch; color: #59645e; font-size: 15px; line-height: 1.65; }
+.heading-actions { display: flex; align-items: stretch; gap: 26px; }
+.archive-count { display: flex; align-items: center; gap: 10px; padding-right: 26px; border-right: 1px solid #c7c9bf; font-size: 31px; line-height: 1; font-variant-numeric: tabular-nums; }
+.archive-count small { color: #69736d; font-size: 8px; line-height: 1.55; }
+.primary-button,
+.secondary-button {
+  border-radius: 0;
+  box-shadow: none;
+  font-weight: 500;
+  transition: background .15s,color .15s;
+}
+.primary-button:hover,
+.secondary-button:hover { transform: none; }
+.primary-button { min-width: 128px; background: #18372b; }
+.primary-button:hover { background: #dbe88c; color: #18372b; }
+.library-toolbar { padding-bottom: 14px; border-bottom-color: #242f29; }
+.section-title { font-family: 'IBM Plex Sans',sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0; }
+.filter-row {
+  margin: 0 0 19px;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 1px solid #d7d7cd;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.search {
+  max-width: 520px;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid #cfd1c8;
+  border-radius: 0;
+  background: #fbfaf4;
+}
+.search:focus-within { border-color: #18372b; }
+.sort select { font-family: 'IBM Plex Mono',monospace; font-size: 10px; text-transform: uppercase; }
+.view-switch { padding: 0; border: 1px solid #cfd1c8; border-radius: 0; background: transparent; }
+.view-switch button { height: 40px; border-radius: 0; }
+.view-switch button + button { border-left: 1px solid #cfd1c8; }
+.view-switch .selected { background: #18372b; color: #fff; }
+.results-line { margin-bottom: 15px; color: #6c746f; font-size: 9px; }
+.demo-label > span { border-radius: 0; background: #778c50; }
+.lesson-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px 18px; }
+.lesson-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cfd1c8;
+  border-radius: 0;
+  background: #fbfaf4;
+  box-shadow: none;
+  transition: border-color .15s;
+}
+.lesson-card:hover { transform: none; border-color: #18372b; box-shadow: none; }
+.lesson-image { aspect-ratio: 1.62; border-bottom: 1px solid #cfd1c8; }
+.lesson-image > img { filter: saturate(.82) contrast(.98); }
+.lesson-image:hover > img { transform: none; filter: saturate(1) contrast(1); }
+.latest-label { top: 0; right: 0; padding: 8px 10px; border-radius: 0; font-size: 8px; }
+.photo-count { left: 0; bottom: 0; border-radius: 0; font-size: 8px; }
+.image-open { right: 0; bottom: 0; width: 38px; height: 38px; border-radius: 0; }
+.lesson-info { display: flex; flex: 1; flex-direction: column; padding: 18px 18px 12px; }
+.topic-tag { padding: 0; border-radius: 0; background: transparent; color: #69766f; font-size: 8px; }
+.card-meta { align-items: baseline; font-size: 10px; }
+.lesson-title {
+  min-height: 56px;
+  margin: 20px 0 14px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -.025em;
+}
+.card-summary {
+  display: -webkit-box;
+  min-height: 42px;
+  margin: -4px 0 17px;
+  overflow: hidden;
+  color: #5f6963;
+  font-size: 12px;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.card-bottom { margin-top: auto; padding-top: 9px; }
+.view-lesson { color: #35483e; }
+.bookmark { border-radius: 0; }
+.bookmark:hover,
+.bookmark.saved { background: #e5e8dc; }
+.library-footer { border-top-color: #242f29; font-family: 'IBM Plex Mono',monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .04em; }
+.list-view { grid-template-columns: 1fr; }
+.list-view .lesson-card { display: grid; grid-template-columns: minmax(220px,34%) 1fr; }
+.list-view .lesson-image { width: 100%; border-bottom: 0; border-right: 1px solid #cfd1c8; }
+.list-view .lesson-info { padding: 20px 24px 14px; }
+
+html[data-theme='dark'] .sidebar { background: #0c1712; }
+html[data-theme='dark'] .main-shell,
+html[data-theme='dark'] .topbar { background: #111713; }
+html[data-theme='dark'] .topbar,
+html[data-theme='dark'] .page-heading,
+html[data-theme='dark'] .library-toolbar,
+html[data-theme='dark'] .filter-row,
+html[data-theme='dark'] .library-footer { border-color: #3a453d; }
+html[data-theme='dark'] .page-heading p,
+html[data-theme='dark'] .eyebrow,
+html[data-theme='dark'] .archive-count small { color: #98a59c; }
+html[data-theme='dark'] .archive-count { border-color: #445048; }
+html[data-theme='dark'] .search,
+html[data-theme='dark'] .lesson-card { border-color: #3b463e; background: #161d18; }
+html[data-theme='dark'] .lesson-card:hover { border-color: #cbd27d; }
+html[data-theme='dark'] .lesson-image,
+html[data-theme='dark'] .list-view .lesson-image { border-color: #3b463e; }
+html[data-theme='dark'] .view-switch { border-color: #3b463e; }
+html[data-theme='dark'] .view-switch button + button { border-color: #3b463e; }
+html[data-theme='dark'] .view-switch .selected { background: #cbd27d; color: #111713; }
+html[data-theme='dark'] .primary-button { background: #cbd27d; color: #111713; }
+html[data-theme='dark'] .primary-button:hover { background: #e2e8a1; }
+html[data-theme='dark'] .topic-tag { background: transparent; color: #aab8ae; }
+html[data-theme='dark'] .card-summary { color: #a4b0a8; }
+
+.key-ideas-field { position: relative; }
+.field-help {
+  display: block;
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.key-ideas-field textarea { min-height: 112px; padding-bottom: 31px!important; resize: vertical; }
+.character-count {
+  position: absolute;
+  right: 11px;
+  bottom: 10px;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+.viewer-key-ideas {
+  max-width: 72ch;
+  margin-top: 22px;
+  padding: 17px 0 0;
+  border-top: 1px solid var(--line);
+}
+.viewer-key-ideas strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.viewer-key-ideas p { margin: 0; color: var(--ink); font-size: 14px; line-height: 1.75; white-space: pre-line; }
+
+@media (max-width: 1280px) {
+  .sidebar { width: 224px; }
+  .main-shell { width: calc(100% - 224px); margin-left: 224px; }
+  .topbar { padding: 0 34px; }
+  main { padding: 54px 34px 30px; }
+  .page-heading { margin-bottom: 56px; }
+}
+@media (max-width: 920px) {
+  .sidebar { width: 196px; }
+  .main-shell { width: calc(100% - 196px); margin-left: 196px; }
+  .page-heading { align-items: flex-start; }
+  .heading-actions { width: 100%; justify-content: space-between; }
+  .archive-count { margin-right: auto; }
+  .lesson-grid { grid-template-columns: 1fr; }
+  .lesson-title { min-height: 0; }
+}
+@media (max-width: 680px) {
+  .sidebar {
+    padding: 18px 18px 0;
+    background: #18372b;
+    border-bottom: 0;
+  }
+  .brand { color: #fff; }
+  .brand-icon { color: #dbe88c; }
+  .sidebar nav { border-bottom-color: #ffffff24; }
+  .nav-item { color: #b9cac2; }
+  .nav-item.active { color: #fff; box-shadow: inset 0 -2px #dbe88c; }
+  .teacher-link { color: #d6e0db; }
+  .topbar { top: 15px; left: 153px; background: transparent; }
+  main { padding: 38px 20px 24px; }
+  .page-heading { gap: 26px; margin-bottom: 42px; padding-bottom: 24px; }
+  h1 { font-size: 48px; }
+  .heading-actions { align-items: stretch; gap: 14px; }
+  .archive-count { padding-right: 14px; font-size: 25px; }
+  .filter-row { padding: 10px 0 14px; }
+  .filter-controls { gap: 9px; }
+  .mobile-lesson-filter select { border-radius: 0; }
+  .lesson-grid { gap: 20px; }
+  .lesson-info { padding: 16px 15px 10px; }
+  .lesson-title { font-size: 19px; }
+  .list-view .lesson-card { display: grid; grid-template-columns: 108px 1fr; gap: 0; padding: 0; }
+  .list-view .lesson-image { width: 100%; border-right: 1px solid #cfd1c8; }
+  .list-view .lesson-info { padding: 12px; }
 }
