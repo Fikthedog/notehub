@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { firestore } from '@/lib/firebase-admin';
-import { canAttachUpload, imagePath, validLesson } from '@/lib/security';
+import { canAttachUpload, imagePath, sanitizeKeyIdeas, validLesson } from '@/lib/security';
 import { configured, failure, sameOrigin, teacher } from '@/lib/server';
 import {notifySubscribers} from '@/lib/notifications';
 
@@ -12,7 +12,7 @@ export async function GET() {
     const snapshot = await firestore().collection('lessons').get();
     const lessons = snapshot.docs.map(doc => {
       const data = doc.data();
-      return { id: doc.id, title: data.title, topic: data.topic, curriculumLesson: data.curriculumLesson ?? null, date: data.date, description: data.description, images: data.images, created_at: data.created_at };
+      return { id: doc.id, title: data.title, topic: data.topic, curriculumLesson: data.curriculumLesson ?? null, date: data.date, description: data.description, keyIdeas: data.keyIdeas ?? '', keyIdeasSource: data.keyIdeasSource ?? null, images: data.images, created_at: data.created_at };
     }).sort((a, b) => b.date.localeCompare(a.date) || b.created_at.localeCompare(a.created_at));
     return Response.json({ demo: false, lessons }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return failure(error); }
@@ -24,11 +24,12 @@ export async function POST(req: Request) {
   let body;
   try { body = await req.json(); } catch { return Response.json({ error: 'Invalid lesson.' }, { status: 400 }); }
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME!;
-  if (!validLesson(body, cloudName)) return Response.json({ error: 'Choose a calculus lesson, add a title and valid date, and upload 1–8 different photos.' }, { status: 400 });
+  if (!validLesson(body, cloudName)) return Response.json({ error: 'Choose a calculus lesson, add a title and valid date, keep key ideas under 1,500 characters, and upload 1–8 different photos.' }, { status: 400 });
   try {
     const db = firestore();
     const id = randomUUID();
-    const lesson = { title: body.title.trim(), topic: 'Calculus', curriculumLesson: body.curriculumLesson, date: body.date, description: body.description.trim(), images: body.images, created_at: new Date().toISOString() };
+    const keyIdeas = sanitizeKeyIdeas(body.keyIdeas)!;
+    const lesson = { title: body.title.trim(), topic: 'Calculus', curriculumLesson: body.curriculumLesson, date: body.date, description: body.description.trim(), keyIdeas, keyIdeasSource: keyIdeas ? 'teacher' : null, images: body.images, created_at: new Date().toISOString() };
     const attached = await db.runTransaction(async transaction => {
       const refs = body.images.map(url => db.collection('uploads').doc(imagePath(url, cloudName)!.slice(8)));
       const uploads = await transaction.getAll(...refs);
