@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { allowedTeacher, canAttachUpload, imagePath, validLesson } from '../lib/security.ts';
+import { allowedTeacher, canAttachUpload, imagePath, sanitizeKeyIdeas, validLesson } from '../lib/security.ts';
 
 const teacher = 'teacher@school.edu';
 const google = { email: teacher, email_verified: true, firebase: { sign_in_provider: 'google.com' } };
@@ -56,14 +56,23 @@ test('only an unused server-recorded upload owned by the teacher can be publishe
   assert.equal(canAttachUpload({...receipt,lessonId:'existing-lesson'},'teacher-uid',image),false);
   assert.equal(canAttachUpload(undefined,'teacher-uid',image),false);
 });
-const lesson = {title:'Quadratic functions',topic:'Calculus',curriculumLesson:'6.10',date:'2026-11-03',description:'Vertex and roots.',images:[image]};
+const lesson = {title:'Quadratic functions',topic:'Calculus',curriculumLesson:'6.10',date:'2026-11-03',description:'Vertex and roots.',keyIdeas:'Connect the vertex to minimum and maximum values.',images:[image]};
 test('lesson input rejects invalid dates, external images, and oversized data', () => {
   assert.equal(validLesson(lesson, cloud), true);
+  assert.equal(validLesson({...lesson,keyIdeas:undefined}, cloud), true);
   for (const change of [
     {curriculumLesson:'6.01'}, {curriculumLesson:'6.13'}, {curriculumLesson:'not-real'}, {curriculumLesson:undefined}, {topic:'Algebra'}, {title:' '}, {title:'x'.repeat(121)}, {topic:''}, {topic:'x'.repeat(41)},
-    {date:'2026-02-30'}, {date:'tomorrow'}, {description:'x'.repeat(1001)},
+    {date:'2026-02-30'}, {date:'tomorrow'}, {description:'x'.repeat(1001)}, {keyIdeas:'x'.repeat(1501)}, {keyIdeas:42},
     {images:[]}, {images:[image,image]}, {images:['https://example.com/a.jpg']},
     {images:Array(9).fill(image)}, {images:[42]},
   ]) assert.equal(validLesson({...lesson,...change}, cloud), false);
   assert.equal(validLesson(null, cloud), false);
+});
+test('key ideas remain backwards compatible and are sanitized as teacher-authored plain text', () => {
+  assert.equal(sanitizeKeyIdeas(undefined), '');
+  assert.equal(sanitizeKeyIdeas(null), '');
+  assert.equal(sanitizeKeyIdeas('  Limits\r\n\u0000and continuity.  '), 'Limits\nand continuity.');
+  assert.equal(sanitizeKeyIdeas('x'.repeat(1500))?.length, 1500);
+  assert.equal(sanitizeKeyIdeas('x'.repeat(1501)), undefined);
+  assert.equal(sanitizeKeyIdeas({text:'not plain text'}), undefined);
 });
