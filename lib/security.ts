@@ -26,16 +26,27 @@ export function canAttachUpload(record: { url?: string; owner?: string; lessonId
   return Boolean(record && record.owner === uid && record.url === url && !record.lessonId);
 }
 
+/** Normalizes an optional teacher-authored plain-text summary. Undefined means invalid input. */
+export function sanitizeKeyIdeas(value: unknown): string | undefined {
+  if (value === undefined || value === null) return '';
+  if (typeof value !== 'string' || value.length > 1500) return undefined;
+  return value
+    .replace(/\r\n?/g, '\n')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .trim();
+}
+
 export function validLesson(value: unknown, cloudName: string): value is {
-  title: string; topic: string; date: string; description: string; images: string[]; curriculumLesson: string;
+  title: string; topic: string; date: string; description: string; keyIdeas?: string; images: string[]; curriculumLesson: string;
 } {
   if (!value || typeof value !== 'object') return false;
-  const { title, topic, date, description, images, curriculumLesson } = value as Record<string, unknown>;
+  const { title, topic, date, description, keyIdeas, images, curriculumLesson } = value as Record<string, unknown>;
   return typeof title === 'string' && title.trim().length > 0 && title.length <= 120 &&
     topic === 'Calculus' && isCurriculumLesson(curriculumLesson) &&
     typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date) &&
     !Number.isNaN(Date.parse(date)) && new Date(date).toISOString().slice(0, 10) === date &&
     typeof description === 'string' && description.length <= 1000 &&
+    sanitizeKeyIdeas(keyIdeas) !== undefined &&
     Array.isArray(images) && images.length >= 1 && images.length <= 8 &&
     new Set(images).size === images.length && images.every(url => imagePath(url, cloudName) !== null);
 }
