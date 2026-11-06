@@ -25,6 +25,7 @@ The sidebar contains 64 numbered AB lessons and 10 BC topic entries, grouped by 
 - Another teacher's uploads cannot be attached, and each photo can be published only once.
 - Firestore browser access is denied by the supplied rules; the server uses Firebase Admin credentials.
 - Bookmarks stay in each student's browser.
+- Students can opt into browser notifications without an account. A notification opens the newly published lesson; expired browser subscriptions are removed automatically.
 
 ## Checks
 
@@ -48,7 +49,7 @@ Interrupted uploads can leave unused Cloudinary photos. The teacher can remove t
 
 ## Deployment
 
-Import this folder's GitHub repository into Vercel using the Next.js preset. Add all 11 variables from `.env.example`, then authorize your Vercel hostname in Firebase Authentication. The project ZIP excludes `.env.local` and private credentials. Remain within Vercel's free-plan limits and eligibility requirements.
+Import this folder's GitHub repository into Vercel using the Next.js preset. Add the 11 required variables from `.env.example` and the three optional Web Push variables to enable student notifications, then authorize your Vercel hostname in Firebase Authentication. The project ZIP excludes `.env.local` and private credentials. Remain within Vercel's free-plan limits and eligibility requirements.
 
 `storage.rules` and `supabase.sql` are historical references and are not used or deployed. No Firebase Storage billing or Supabase credentials are needed. Previous versions' photos are not automatically migrated.
 

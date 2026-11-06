@@ -94,7 +94,8 @@ Also test Google sign-in with a different account; it must be denied teacher acc
 
 1. Push the project to your GitHub repository and import it into [Vercel](https://vercel.com/new).
 2. Choose the **Next.js** preset and Node.js **24.x**.
-3. Add the **11 environment variables** from `.env.example`: four public Firebase values, three Firebase server credentials, the teacher email list, and three Cloudinary values.
+3. Add the **11 required environment variables** from `.env.example`: four public Firebase values, three Firebase server credentials, the teacher email list, and three Cloudinary values.
+4. To enable opt-in student browser notifications, generate one VAPID key pair with `npx web-push generate-vapid-keys`, then add `WEB_PUSH_PUBLIC_KEY`, `WEB_PUSH_PRIVATE_KEY`, and a `WEB_PUSH_SUBJECT` contact such as `mailto:teacher@example.com`. Keep the private key server-only and reuse the same pair across deployments; changing it invalidates existing subscriptions.
 4. Deploy. Add the exact resulting hostname, e.g. `notehub-school.vercel.app`, to Firebase Authentication's authorized domains.
 5. Repeat the teacher/student test on the deployed site.
 
@@ -120,7 +121,8 @@ npx -y firebase-tools@latest deploy --only firestore --project notehub-classroom
 
 | Problem | Check |
 | --- | --- |
-| Example classroom still appears | Complete all 11 variables, then restart or redeploy. |
+| Example classroom still appears | Complete all 11 required variables, then restart or redeploy. |
+| Notify me says notifications are not configured | Add all three Web Push variables and redeploy. Browser notifications require HTTPS in production. |
 | Google popup closes or reports unauthorized domain | Use localhost for local testing; add the exact deployment hostname to Firebase Auth settings; allow sign-in pop-ups. |
 | Account has no teacher access | Use a verified Google email included in `TEACHER_EMAIL`. |
 | Publishing or deleting fails | Run `npm run firebase:check`; check admin credentials and Cloudinary usage. |
