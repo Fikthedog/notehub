@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { firestore } from '@/lib/firebase-admin';
 import { canAttachUpload, imagePath, validLesson } from '@/lib/security';
 import { configured, failure, sameOrigin, teacher } from '@/lib/server';
+import {notifySubscribers} from '@/lib/notifications';
 
 export const runtime = 'nodejs';
 export async function GET() {
@@ -37,6 +38,8 @@ export async function POST(req: Request) {
       return true;
     });
     if (!attached) return Response.json({ error: 'These photos are missing, belong to another account, or were already published. Please upload them again.' }, { status: 400 });
+    try { await notifySubscribers({id, title: lesson.title, curriculumLesson: lesson.curriculumLesson}); }
+    catch (notificationError) { console.error('Notehub notifications could not be sent:', (notificationError as {code?: string}).code || 'unknown'); }
     return Response.json({ id, ...lesson }, { status: 201 });
   } catch (error) { return failure(error); }
 }
